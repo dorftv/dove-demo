@@ -1,0 +1,46 @@
+paths:
+  all_others:
+
+
+##########################################################################
+# Enable WEBRTC/WHEP
+webrtc: yes
+webrtcAddress: :8889
+webrtcEncryption: no
+webrtcAllowOrigin: '*'
+webrtcLocalUDPAddress: :8189
+webrtcIPsFromInterfaces: yes
+# You need to set this if you want to reach whep preview from other hosts:
+webrtcAdditionalHosts: []
+webrtcICEServers2: []
+
+
+##########################################################################
+# Srt is used for ingest to mediamtx
+srt: yes
+srtAddress: :8890
+
+
+##########################################################################
+# the api is used for fetching avaliable streams
+api: yes
+apiAddress: :9997
+apiEncryption: no
+
+
+authInternalUsers:
+- user: any
+  pass:
+  permissions:
+  - action: api
+    path:
+- user: any
+  permissions:
+  - action: read
+    path:
+  - action: playback
+    path:
+  - action: publish
+    path:
+
+

@@ -1,0 +1,43 @@
+services:
+  dove:
+    image: ghcr.io/dorftv/dove:latest
+    volumes:
+      - ./assets:/assets
+      - ./config.toml:/app/config.toml 
+    environment:
+      - LIBGL_ALWAYS_SOFTWARE=true
+    restart: always
+    ports:
+      - 5000:5000
+#      - 7777:7777/udp
+    security_opt:
+      - "apparmor=unconfined"
+      - "seccomp=unconfined"
+    cap_add:
+     - SYS_ADMIN
+     - CAP_NET_ADMIN
+    deploy:
+      resources:
+        limits:
+          memory: 8192M
+    networks:
+      - dove
+
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    volumes:
+      - ./mediamtx.yml:/mediamtx.yml
+    networks:
+      - dove
+
+  nodecg:
+    image: ghcr.io/dorftv/nodecg-bundles:latest
+    ports:
+      - 9090:9090
+    networks:
+      - dove
+
+
+networks:
+  dove:
+

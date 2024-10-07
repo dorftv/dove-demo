@@ -1,0 +1,145 @@
+[main]
+
+# Video
+default_resolution = "HD720"
+default_framerate = "25/1"
+
+
+[ui]
+enabled_inputs = ["playbin3", "playlist", "wpesrc", "ytdlp", "testsrc", "nodecg"]
+enabled_outputs = ["srtsink", "decklink", "shout2send", "srtserversink"]
+
+
+
+
+######################################################################
+### Scenes and Inputs ################################################
+
+[scenes]
+[scenes.scene1]
+type="scene"
+name="Example Scene"
+uid="af19cced-8230-4a2b-afb3-acff555c9eac"
+program=true
+locked=true
+
+
+[scenes.scene1.input1]
+alpha=1
+locked=true
+src_locked=true
+[scenes.scene1.input1.input]
+name="Video green 2 seconds"
+type = "playbin3"
+uri = "file:///assets/2_seconds_video_green.mp4"
+loop=true
+volume=0.8
+uid="af19cced-8230-4a2b-afb3-acff555c9ead"
+
+
+
+[scenes.scene2]
+type="scene"
+name="Scene 2"
+program=true
+
+[scenes.scene2.input1]
+alpha=1
+
+[scenes.scene2.input1.input]
+name = "distortion"
+type = "testsrc"
+pattern = 1
+wave = 4
+
+[scenes.scene2.input2]
+alpha=1
+width=480
+height=270
+xpos = 700
+ypos=400
+
+
+[scenes.scene2.input2.input]
+name = "testsrc"
+type = "testsrc"
+pattern = 0
+wave=4
+
+[scenes.scene2.input3]
+alpha=1
+width=480
+height=270
+xpos = 100
+ypos=400
+
+[scenes.scene2.input3.input]
+name="Video pink 4 seconds"
+type = "playbin3"
+uri = "file:///assets/4_seconds_video_pink.mp4"
+loop=true
+volume=0.8
+src_locked=true
+
+
+[program.nodecg_overlay]
+index=2
+name = "Lower Third"
+type = "nodecg"
+location = "http://nodecg:9090/bundles/lower-third/graphics/index.html"
+nodecg_baseurl = "http://localhost:9090"
+panels = "bundles/lower-third/dashboard/index.html"
+
+
+
+######################################################################
+### Preview Settings   ###############################################
+
+[preview]
+whep_proxy = true
+whep_proxy_host = "mediamtx"
+whep_proxy_port = 8889
+whep_proxy_ingest_port = 8890
+
+[preview.inputs]
+type="srtsink"
+width=640
+height=360
+video_encoder.name = "openh264enc"
+audio_encoder.name = "opus"
+
+[preview.scenes]
+type="srtsink"
+width=640
+height=360
+audio_encoder.name = "opus"
+video_encoder.name = "openh264enc"
+video_encoder.profile = "baseline"
+
+[preview.program]
+type="srtsink"
+width=640
+height=360
+video_encoder.name = "openh264enc"
+audio_encoder.name = "opus"
+
+
+[ouputs]
+
+
+######################################################################
+### Outputs   ########################################################
+
+# also uncomment port 7777 in docker compose.
+#[outputs.srt]
+#type="srtserversink"
+#name="Local SRT Server"
+#video_encoder.name = "x264"
+#video_encoder.options = "bitrate=5100 speed-preset=ultrafast tune=zerolatency pass=cbr"
+#uri="srt://:7777"
+
+
+######################################################################
+### Proxy Settings   #################################################
+[proxy]
+
